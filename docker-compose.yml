@@ -1,0 +1,32 @@
+version: '3.9'
+services:
+  api:
+    build: .
+    image: medusastudio/jam-backend
+    container_name: jam_api
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - jam_network
+
+  postgres:
+    image: postgres:13.3
+    container_name: jam_postgres
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: '/var/lib/postgresql/data/pgdata'
+    volumes:
+      - .:/var/lib/postgresql/data
+    networks:
+      - jam_network
+
+networks:
+  jam_network:
+    external: true
