@@ -1,7 +1,7 @@
 import { Genre } from 'src/genres/entities/genre.entity';
 import { Instrument } from 'src/instruments/entities/instrument.entity';
 import { Studio } from 'src/studios/entities/studio.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 
 @Entity()
 export class User {
@@ -15,7 +15,7 @@ export class User {
     firstName: string;
   
     @Column()
-    lastName: string;
+    lastName?: string;
   
     @Column()
     country: string;
@@ -26,9 +26,11 @@ export class User {
     @OneToMany(() => Studio, studio => studio.user)
     studios: Studio[];
 
-    @ManyToMany(() => Instrument, instrument => instrument.user)
+    @ManyToMany(() => Instrument, instrument => instrument.user, { cascade: true })
+    @JoinTable()
     instruments: Instrument[];
 
-    @ManyToMany(() => Genre, genre => genre.user)
+    @ManyToMany(() => Genre, genre => genre.user, { cascade: true })
+    @JoinTable()
     genres: Genre[];
 }

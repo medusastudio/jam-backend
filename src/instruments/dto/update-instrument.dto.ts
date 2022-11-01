@@ -1,4 +1,10 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateInstrumentDto } from './create-instrument.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
 
-export class UpdateInstrumentDto extends PartialType(CreateInstrumentDto) {}
+export class UpdateInstrumentDto  {
+  @ApiProperty({
+    nullable: true,
+  })
+  @IsOptional()
+  name: string;
+}

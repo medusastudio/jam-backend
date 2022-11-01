@@ -3,12 +3,12 @@ import { Column, Entity, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "ty
 
 @Entity()
 export class Instrument {
-    @PrimaryGeneratedColumn()
-    id: number;
-  
-    @Column()
-    name: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @ManyToMany(() => User)
-    user: User
+  @Column()
+  name: string;
+
+  @ManyToMany(() => User)
+  user: User
 }
