@@ -31,4 +31,8 @@ export class CreateStudioDto {
   @ApiProperty()
   @IsNotEmpty()
   city: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  userId: number;
 }

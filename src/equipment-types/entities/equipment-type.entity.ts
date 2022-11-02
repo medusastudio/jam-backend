@@ -3,12 +3,12 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class EquipmentType {
-    @PrimaryGeneratedColumn()
-    id: number;
-  
-    @Column()
-    name: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @OneToMany(() => Equipment, equipment => equipment.equipmentType)
-    equipments: Equipment[]
+  @Column()
+  name: string;
+
+  @OneToMany(() => Equipment, equipment => equipment.equipmentType)
+  equipments: Equipment[]
 }

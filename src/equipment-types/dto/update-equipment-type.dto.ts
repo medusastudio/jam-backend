@@ -1,4 +1,10 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateEquipmentTypeDto } from './create-equipment-type.dto';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsOptional } from "class-validator";
 
-export class UpdateEquipmentTypeDto extends PartialType(CreateEquipmentTypeDto) {}
+export class UpdateEquipmentTypeDto {
+  @ApiProperty({
+    nullable: true,
+  })
+  @IsOptional()
+  name: string;
+}

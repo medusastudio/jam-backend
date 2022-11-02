@@ -4,18 +4,18 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Equipment {
-    @PrimaryGeneratedColumn()
-    id: number;
-  
-    @Column()
-    name: string;
-  
-    @Column('text')
-    description: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @ManyToOne(() => EquipmentType)
-    equipmentType: EquipmentType
+  @Column()
+  name: string;
 
-    @ManyToOne(() => Room)
-    room: Room
+  @Column('text')
+  description: string;
+
+  @ManyToOne(() => EquipmentType)
+  equipmentType: EquipmentType
+
+  @ManyToOne(() => Room)
+  room: Room
 }
