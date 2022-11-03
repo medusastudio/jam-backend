@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsEnum, IsNotEmpty, IsPhoneNumber } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsPhoneNumber } from "class-validator";
 import { Country } from "src/countries.enum";
 
 export class CreateStudioDto {
@@ -31,6 +31,13 @@ export class CreateStudioDto {
   @ApiProperty()
   @IsNotEmpty()
   city: string;
+
+  @ApiProperty({
+    required: false,
+    nullable: true,
+  })
+  @IsOptional()
+  booking?: string;
 
   @ApiProperty()
   @IsNotEmpty()

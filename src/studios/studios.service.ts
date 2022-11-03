@@ -16,6 +16,10 @@ export class StudiosService {
     return this.studioRepository.create(createStudioDto);
   }
 
+  save(studio: Studio) {
+    return this.studioRepository.save(studio);
+  }
+
   findAll() {
     return this.studioRepository.find();
   }

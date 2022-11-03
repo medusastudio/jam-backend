@@ -26,11 +26,15 @@ export class Studio {
   })
   country: string;
 
-  @Column()
-  city: string;
+  @Column({
+    nullable: true,
+  })
+  city?: string;
 
-  @Column()
-  booking: string;
+  @Column({
+    nullable: true,
+  })
+  booking?: string;
 
   @ManyToOne(() => User)
   user: User

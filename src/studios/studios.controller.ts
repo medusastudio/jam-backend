@@ -2,14 +2,21 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { StudiosService } from './studios.service';
 import { CreateStudioDto } from './dto/create-studio.dto';
 import { UpdateStudioDto } from './dto/update-studio.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('studios')
 export class StudiosController {
-  constructor(private readonly studiosService: StudiosService) {}
+  constructor(
+    private readonly studiosService: StudiosService,
+    private readonly userService: UsersService
+  ) {}
 
   @Post()
-  create(@Body() createStudioDto: CreateStudioDto) {
-    return this.studiosService.create(createStudioDto);
+  async create(@Body() createStudioDto: CreateStudioDto) {
+    const user = await this.userService.findOne(createStudioDto.userId);
+    const studio = this.studiosService.create(createStudioDto);
+    studio.user = user;
+    return this.studiosService.save(studio);
   }
 
   @Get()

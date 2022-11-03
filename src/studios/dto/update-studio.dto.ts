@@ -4,54 +4,54 @@ import { Country } from "src/countries.enum";
 
 export class UpdateStudioDto {
   @ApiProperty({
-    required: false,
     nullable: true,
+    required: false,
   })
   @IsEmail()
   @IsOptional()
   email?: string;
 
   @ApiProperty({
-    required: false,
     nullable: true,
+    required: false,
   })
   @IsOptional()
   name?: string;
 
   @ApiProperty({
-    required: false,
     nullable: true,
+    required: false,
   })
   @IsOptional()
   @IsPhoneNumber()
   phone?: string;
 
   @ApiProperty({
-    required: false,
     nullable: true,
+    required: false,
   })
   @IsOptional()
   coordinates?: string;
 
   @ApiProperty({
-    required: false,
-    nullable: true,
     enum: Country,
+    nullable: true,
+    required: false,
   })
   @IsOptional()
   @IsEnum(Country)
   country?: string;
 
   @ApiProperty({
-    required: false,
     nullable: true,
+    required: false,
   })
   @IsOptional()
   city?: string;
 
   @ApiProperty({
-    required: false,
     nullable: true,
+    required: false,
   })
   @IsOptional()
   userId?: string;
