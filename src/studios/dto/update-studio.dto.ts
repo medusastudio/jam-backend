@@ -22,8 +22,8 @@ export class UpdateStudioDto {
     nullable: true,
     required: false,
   })
-  @IsOptional()
   @IsPhoneNumber()
+  @IsOptional()
   phone?: string;
 
   @ApiProperty({
@@ -38,8 +38,8 @@ export class UpdateStudioDto {
     nullable: true,
     required: false,
   })
-  @IsOptional()
   @IsEnum(Country)
+  @IsOptional()
   country?: string;
 
   @ApiProperty({

@@ -36,7 +36,7 @@ export class Studio {
   })
   booking?: string;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, { nullable: false })
   user: User
 
   @OneToMany(() => Room, room => room.studio)

@@ -2,14 +2,21 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
+import { StudiosService } from 'src/studios/studios.service';
 
 @Controller('rooms')
 export class RoomsController {
-  constructor(private readonly roomsService: RoomsService) {}
+  constructor(
+    private readonly roomsService: RoomsService,
+    private readonly studiosService: StudiosService,
+  ) { }
 
   @Post()
-  create(@Body() createRoomDto: CreateRoomDto) {
-    return this.roomsService.create(createRoomDto);
+  async create(@Body() createRoomDto: CreateRoomDto) {
+    const studio = await this.studiosService.findOne(createRoomDto.studioId);
+    const room = this.roomsService.create(createRoomDto);
+    room.studio = studio;
+    return this.roomsService.save(room);
   }
 
   @Get()

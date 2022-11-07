@@ -9,4 +9,8 @@ export class CreateRoomDto {
   @ApiProperty()
   @IsNotEmpty()
   description: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  studioId: number;
 }

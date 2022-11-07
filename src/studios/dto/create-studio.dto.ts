@@ -13,8 +13,8 @@ export class CreateStudioDto {
   name: string;
 
   @ApiProperty()
-  @IsNotEmpty()
   @IsPhoneNumber()
+  @IsNotEmpty()
   phone: string;
 
   @ApiProperty()
@@ -24,8 +24,8 @@ export class CreateStudioDto {
   @ApiProperty({
     enum: Country,
   })
-  @IsNotEmpty()
   @IsEnum(Country)
+  @IsNotEmpty()
   country: string;
 
   @ApiProperty()

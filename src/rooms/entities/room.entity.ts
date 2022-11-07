@@ -13,7 +13,7 @@ export class Room {
   @Column('text')
   description: string;
 
-  @ManyToOne(() => Studio)
+  @ManyToOne(() => Studio, { nullable: false })
   studio: Studio
 
   @OneToMany(() => Equipment, epuipment => epuipment.room)
