@@ -9,30 +9,30 @@ import { Room } from './entities/room.entity';
 export class RoomsService {
   constructor(
     @InjectRepository(Room)
-    private roomRepository: Repository<Room>,
+    private roomsRepository: Repository<Room>,
   ) { }
 
   create(createRoomDto: CreateRoomDto) {
-    return this.roomRepository.create(createRoomDto);
+    return this.roomsRepository.create(createRoomDto);
   }
 
   save(room: Room) {
-    return this.roomRepository.save(room);
+    return this.roomsRepository.save(room);
   }
 
   findAll() {
-    return `This action returns all rooms`;
+    return this.roomsRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} room`;
+    return this.roomsRepository.findOne({ where: { id } })
   }
 
   update(id: number, updateRoomDto: UpdateRoomDto) {
-    return `This action updates a #${id} room`;
+    return this.roomsRepository.update(+id, updateRoomDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} room`;
+    return this.roomsRepository.delete(+id);
   }
 }

@@ -13,9 +13,9 @@ export class Equipment {
   @Column('text')
   description: string;
 
-  @ManyToOne(() => EquipmentType)
+  @ManyToOne(() => EquipmentType, { nullable: false })
   equipmentType: EquipmentType
 
-  @ManyToOne(() => Room)
+  @ManyToOne(() => Room, { nullable: false })
   room: Room
 }

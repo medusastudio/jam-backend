@@ -9,4 +9,12 @@ export class CreateEquipmentDto {
   @ApiProperty()
   @IsNotEmpty()
   description: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  equipmentTypeId: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  roomId: number;
 }

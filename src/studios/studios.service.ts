@@ -9,30 +9,30 @@ import { Studio } from './entities/studio.entity';
 export class StudiosService {
   constructor(
     @InjectRepository(Studio)
-    private studioRepository: Repository<Studio>,
+    private studiosRepository: Repository<Studio>,
   ) { }
 
   create(createStudioDto: CreateStudioDto) {
-    return this.studioRepository.create(createStudioDto);
+    return this.studiosRepository.create(createStudioDto);
   }
 
   save(studio: Studio) {
-    return this.studioRepository.save(studio);
+    return this.studiosRepository.save(studio);
   }
 
   findAll() {
-    return this.studioRepository.find();
+    return this.studiosRepository.find();
   }
 
   findOne(id: number) {
-    return this.studioRepository.findOne({ where: { id } });
+    return this.studiosRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateStudioDto: UpdateStudioDto) {
-    return this.studioRepository.update(id, updateStudioDto);
+    return this.studiosRepository.update(+id, updateStudioDto);
   }
 
   remove(id: number) {
-    return this.studioRepository.delete(id);
+    return this.studiosRepository.delete(+id);
   }
 }

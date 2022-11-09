@@ -2,13 +2,25 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { EquipmentsService } from './equipments.service';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
+import { EquipmentTypesService } from 'src/equipment-types/equipment-types.service';
+import { RoomsService } from 'src/rooms/rooms.service';
 
 @Controller('equipments')
 export class EquipmentsController {
-  constructor(private readonly equipmentsService: EquipmentsService) {}
+  constructor(
+    private readonly equipmentsService: EquipmentsService,
+    private readonly equipmentTypesService: EquipmentTypesService,
+    private readonly roomsService: RoomsService,
+  ) {}
 
   @Post()
-  create(@Body() createEquipmentDto: CreateEquipmentDto) {
+  async create(@Body() createEquipmentDto: CreateEquipmentDto) {
+    const room = await this.roomsService.findOne(createEquipmentDto.roomId);
+    const equipmentType = await this.equipmentTypesService.findOne(createEquipmentDto.equipmentTypeId);
+    const equipment = this.equipmentsService.create(createEquipmentDto);
+    equipment.room = room;
+    equipment.equipmentType = equipmentType;
+
     return this.equipmentsService.create(createEquipmentDto);
   }
 

@@ -28,6 +28,7 @@ import { EquipmentType } from './equipment-types/entities/equipment-type.entity'
       database: 'jam',
       entities: [User, Studio, Instrument, Genre, Room, Equipment, EquipmentType],
       synchronize: true,
+      dropSchema: true,
     }),
     UsersModule,
     StudiosModule,

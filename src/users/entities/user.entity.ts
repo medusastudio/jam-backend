@@ -1,3 +1,4 @@
+import { Country } from 'src/countries.enum';
 import { Genre } from 'src/genres/entities/genre.entity';
 import { Instrument } from 'src/instruments/entities/instrument.entity';
 import { Studio } from 'src/studios/entities/studio.entity';
@@ -5,32 +6,35 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, JoinTabl
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    email: string;
-  
-    @Column()
-    firstName: string;
-  
-    @Column()
-    lastName?: string;
-  
-    @Column()
-    country: string;
-  
-    @Column()
-    city: string;
+  @Column()
+  email: string;
 
-    @OneToMany(() => Studio, studio => studio.user)
-    studios: Studio[];
+  @Column()
+  firstName: string;
 
-    @ManyToMany(() => Instrument, instrument => instrument.user, { cascade: true })
-    @JoinTable()
-    instruments: Instrument[];
+  @Column()
+  lastName?: string;
 
-    @ManyToMany(() => Genre, genre => genre.user, { cascade: true })
-    @JoinTable()
-    genres: Genre[];
+  @Column({
+    type: 'enum',
+    enum: Country,
+  })
+  country: string;
+
+  @Column()
+  city: string;
+
+  @OneToMany(() => Studio, studio => studio.user)
+  studios: Studio[];
+
+  @ManyToMany(() => Instrument, instrument => instrument.user, { cascade: true })
+  @JoinTable({ name: 'user_instuments' })
+  instruments: Instrument[];
+
+  @ManyToMany(() => Genre, genre => genre.user, { cascade: true })
+  @JoinTable({ name: 'user_genres' })
+  genres: Genre[];
 }

@@ -8,12 +8,12 @@ import { UsersService } from 'src/users/users.service';
 export class StudiosController {
   constructor(
     private readonly studiosService: StudiosService,
-    private readonly userService: UsersService
+    private readonly usersService: UsersService
   ) {}
 
   @Post()
   async create(@Body() createStudioDto: CreateStudioDto) {
-    const user = await this.userService.findOne(createStudioDto.userId);
+    const user = await this.usersService.findOne(createStudioDto.userId);
     const studio = this.studiosService.create(createStudioDto);
     studio.user = user;
     return this.studiosService.save(studio);

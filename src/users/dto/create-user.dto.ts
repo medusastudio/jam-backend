@@ -1,5 +1,6 @@
-import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsEmail, IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
 import { ApiProperty } from "@nestjs/swagger";
+import { Country } from 'src/countries.enum';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -17,7 +18,10 @@ export class CreateUserDto {
   @IsOptional()
   lastName?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    enum: Country,
+  })
+  @IsEnum(Country)
   @IsNotEmpty()
   country: string;
 

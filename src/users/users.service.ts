@@ -13,7 +13,11 @@ export class UsersService {
   ) { }
 
   create(createUserDto: CreateUserDto) {
-    return this.usersRepository.save(createUserDto);
+    return this.usersRepository.create(createUserDto);
+  }
+
+  save(user: User) {
+    return this.usersRepository.save(user);
   }
 
   findAll() {
@@ -25,10 +29,10 @@ export class UsersService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return this.usersRepository.update(id, updateUserDto);
+    return this.usersRepository.update(+id, updateUserDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.usersRepository.delete(+id);
   }
 }

@@ -4,13 +4,29 @@ import { IsOptional } from "class-validator";
 export class UpdateEquipmentDto {
   @ApiProperty({
     nullable: true,
+    required: false,
   })
   @IsOptional()
-  name: string;
+  name?: string;
 
   @ApiProperty({
     nullable: true,
+    required: false,
   })
   @IsOptional()
-  description: string;
+  description?: string;
+
+  @ApiProperty({
+    nullable: true,
+    required: false,
+  })
+  @IsOptional()
+  equipmentTypeId?: number;
+
+  @ApiProperty({
+    nullable: true,
+    required: false,
+  })
+  @IsOptional()
+  roomId?: number;
 }
