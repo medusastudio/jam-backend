@@ -31,10 +31,8 @@ export class User {
   studios: Studio[];
 
   @ManyToMany(() => Instrument, instrument => instrument.user, { cascade: true })
-  @JoinTable({ name: 'user_instuments' })
   instruments: Instrument[];
 
   @ManyToMany(() => Genre, genre => genre.user, { cascade: true })
-  @JoinTable({ name: 'user_genres' })
   genres: Genre[];
 }

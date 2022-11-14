@@ -14,6 +14,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     nullable: true,
+    required: false,
   })
   @IsOptional()
   lastName?: string;
@@ -28,4 +29,20 @@ export class CreateUserDto {
   @ApiProperty()
   @IsNotEmpty()
   city: string;
+
+  @ApiProperty({
+    nullable: true,
+    required: false,
+    type: [Number],
+  })
+  @IsOptional()
+  genreIds?: number[];
+
+  @ApiProperty({
+    nullable: true,
+    required: false,
+    type: [Number],
+  })
+  @IsOptional()
+  instrumentIds?: number[];
 }

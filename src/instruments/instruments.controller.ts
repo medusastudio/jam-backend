@@ -9,7 +9,8 @@ export class InstrumentsController {
 
   @Post()
   create(@Body() createInstrumentDto: CreateInstrumentDto) {
-    return this.instrumentsService.create(createInstrumentDto);
+    const instrument = this.instrumentsService.create(createInstrumentDto);
+    return this.instrumentsService.save(instrument);
   }
 
   @Get()

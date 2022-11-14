@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { CreateGenreDto } from './dto/create-genre.dto';
 import { UpdateGenreDto } from './dto/update-genre.dto';
 import { Genre } from './entities/genre.entity';
@@ -13,22 +13,26 @@ export class GenresService {
   ) {}
 
   create(createGenreDto: CreateGenreDto) {
-    return this.genresRepository.save(createGenreDto);
+    return this.genresRepository.create(createGenreDto);
   }
 
-  findAll() {
-    return `This action returns all genres`;
+  save(genre: Genre) {
+    return this.genresRepository.save(genre);
+  }
+
+  findAll(options?: FindManyOptions<Genre>) {
+    return this.genresRepository.find(options);
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} genre`;
+    return this.genresRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateGenreDto: UpdateGenreDto) {
-    return `This action updates a #${id} genre`;
+    return this.genresRepository.update(+id, updateGenreDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} genre`;
+    return this.genresRepository.delete(+id);
   }
 }

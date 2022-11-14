@@ -9,6 +9,6 @@ export class Genre {
   @Column()
   name: string;
 
-  @ManyToMany(() => User)
+  @ManyToMany(() => User, user => user.instruments)
   user: User
 }

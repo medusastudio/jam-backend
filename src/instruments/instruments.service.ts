@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Genre } from 'src/genres/entities/genre.entity';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { CreateInstrumentDto } from './dto/create-instrument.dto';
 import { UpdateInstrumentDto } from './dto/update-instrument.dto';
 import { Instrument } from './entities/instrument.entity';
@@ -14,22 +14,26 @@ export class InstrumentsService {
   ) {}
 
   create(createInstrumentDto: CreateInstrumentDto) {
-    return this.instrumentsRepository.save(createInstrumentDto);
+    return this.instrumentsRepository.create(createInstrumentDto);
   }
 
-  findAll() {
-    return `This action returns all instruments`;
+  save(instrument: Instrument) {
+    return this.instrumentsRepository.save(instrument);
+  }
+
+  findAll(options?: FindManyOptions<Genre>) {
+    return this.instrumentsRepository.find(options);
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} instrument`;
+    return this.instrumentsRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateInstrumentDto: UpdateInstrumentDto) {
-    return `This action updates a #${id} instrument`;
+    return this.instrumentsRepository.update(+id, updateInstrumentDto);
   }
 
   remove(id: number) {
-    return `This action removes a #${id} instrument`;
+    return this.instrumentsRepository.delete(+id);
   }
 }
