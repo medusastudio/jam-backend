@@ -40,20 +40,4 @@ export class UpdateUserDto {
   })
   @IsOptional()
   city?: string;
-
-  @ApiProperty({
-    nullable: true,
-    required: false,
-    type: [Number],
-  })
-  @IsOptional()
-  genreIds?: number[];
-
-  @ApiProperty({
-    nullable: true,
-    required: false,
-    type: [Number],
-  })
-  @IsOptional()
-  instrumentIds?: number[];
 }

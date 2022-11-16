@@ -10,7 +10,7 @@ export class EquipmentTypesService {
   constructor(
     @InjectRepository(EquipmentType)
     private equipmentTypesRepository: Repository<EquipmentType>,
-  ) { }
+  ) {}
 
   create(createEquipmentTypeDto: CreateEquipmentTypeDto) {
     return this.equipmentTypesRepository.create(createEquipmentTypeDto);
@@ -25,7 +25,7 @@ export class EquipmentTypesService {
   }
 
   findOne(id: number) {
-    return this.equipmentTypesRepository.findOne({ where: { id } })
+    return this.equipmentTypesRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateEquipmentTypeDto: UpdateEquipmentTypeDto) {

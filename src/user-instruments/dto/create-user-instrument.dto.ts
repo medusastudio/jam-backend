@@ -1,8 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
-export class CreateGenreDto {
+export class CreateUserInstrumentDto {
   @ApiProperty()
   @IsNotEmpty()
-  name: string;
+  userId: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  instrumentId: number;
 }

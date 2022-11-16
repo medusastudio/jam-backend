@@ -1,6 +1,12 @@
-import { Equipment } from "src/equipments/entities/equipment.entity";
-import { Studio } from "src/studios/entities/studio.entity";
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Equipment } from 'src/equipments/entities/equipment.entity';
+import { Studio } from 'src/studios/entities/studio.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Room {
@@ -14,8 +20,8 @@ export class Room {
   description: string;
 
   @ManyToOne(() => Studio, { nullable: false })
-  studio: Studio
+  studio: Studio;
 
-  @OneToMany(() => Equipment, epuipment => epuipment.room)
-  equipments: Equipment[]
+  @OneToMany(() => Equipment, (epuipment) => epuipment.room)
+  equipments: Equipment[];
 }

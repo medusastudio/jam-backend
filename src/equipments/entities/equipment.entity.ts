@@ -1,6 +1,6 @@
-import { EquipmentType } from "src/equipment-types/entities/equipment-type.entity";
-import { Room } from "src/rooms/entities/room.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { EquipmentType } from 'src/equipment-types/entities/equipment-type.entity';
+import { Room } from 'src/rooms/entities/room.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Equipment {
@@ -14,8 +14,8 @@ export class Equipment {
   description: string;
 
   @ManyToOne(() => EquipmentType, { nullable: false })
-  equipmentType: EquipmentType
+  equipmentType: EquipmentType;
 
   @ManyToOne(() => Room, { nullable: false })
-  room: Room
+  room: Room;
 }

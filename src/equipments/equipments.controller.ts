@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { EquipmentsService } from './equipments.service';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
@@ -17,7 +25,9 @@ export class EquipmentsController {
   async create(@Body() createEquipmentDto: CreateEquipmentDto) {
     const { roomId, equipmentTypeId } = createEquipmentDto;
     const room = await this.roomsService.findOne(roomId);
-    const equipmentType = await this.equipmentTypesService.findOne(equipmentTypeId);
+    const equipmentType = await this.equipmentTypesService.findOne(
+      equipmentTypeId,
+    );
     const equipment = this.equipmentsService.create(createEquipmentDto);
     equipment.room = room;
     equipment.equipmentType = equipmentType;
@@ -36,7 +46,10 @@ export class EquipmentsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEquipmentDto: UpdateEquipmentDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateEquipmentDto: UpdateEquipmentDto,
+  ) {
     return this.equipmentsService.update(+id, updateEquipmentDto);
   }
 

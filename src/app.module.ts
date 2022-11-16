@@ -16,6 +16,10 @@ import { Genre } from './genres/entities/genre.entity';
 import { Room } from './rooms/entities/room.entity';
 import { Equipment } from './equipments/entities/equipment.entity';
 import { EquipmentType } from './equipment-types/entities/equipment-type.entity';
+import { UserInstrumentsModule } from './user-instruments/user-instruments.module';
+import { UserInstrument } from './user-instruments/entities/user-instrument.entity';
+import { UserGenre } from './user-genres/entities/user-genre.entity';
+import { UserGenresModule } from './user-genres/user-genres.module';
 
 @Module({
   imports: [
@@ -26,9 +30,19 @@ import { EquipmentType } from './equipment-types/entities/equipment-type.entity'
       username: 'medusa',
       password: 'medusa',
       database: 'jam',
-      entities: [User, Studio, Instrument, Genre, Room, Equipment, EquipmentType],
+      entities: [
+        User,
+        Studio,
+        Instrument,
+        Genre,
+        Room,
+        Equipment,
+        EquipmentType,
+        UserInstrument,
+        UserGenre,
+      ],
       synchronize: true,
-      dropSchema: true,
+      // dropSchema: true,
     }),
     UsersModule,
     StudiosModule,
@@ -37,6 +51,8 @@ import { EquipmentType } from './equipment-types/entities/equipment-type.entity'
     InstrumentsModule,
     GenresModule,
     EquipmentTypesModule,
+    UserInstrumentsModule,
+    UserGenresModule,
   ],
   controllers: [AppController],
   providers: [AppService],

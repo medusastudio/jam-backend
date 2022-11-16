@@ -10,7 +10,7 @@ export class EquipmentsService {
   constructor(
     @InjectRepository(Equipment)
     private equipmentRepository: Repository<Equipment>,
-  ) { }
+  ) {}
 
   create(createEquipmentDto: CreateEquipmentDto) {
     return this.equipmentRepository.create(createEquipmentDto);

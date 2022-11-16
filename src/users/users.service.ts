@@ -10,7 +10,7 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-  ) { }
+  ) {}
 
   create(createUserDto: CreateUserDto) {
     return this.usersRepository.create(createUserDto);
@@ -25,11 +25,11 @@ export class UsersService {
   }
 
   findOne(id: number) {
-    return this.usersRepository.findOne({ where: { id } })
+    return this.usersRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return this.usersRepository.update(+id, updateUserDto);
+    return this.usersRepository.save({ id, ...updateUserDto });
   }
 
   remove(id: number) {

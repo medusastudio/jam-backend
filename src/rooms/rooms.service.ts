@@ -10,7 +10,7 @@ export class RoomsService {
   constructor(
     @InjectRepository(Room)
     private roomsRepository: Repository<Room>,
-  ) { }
+  ) {}
 
   create(createRoomDto: CreateRoomDto) {
     return this.roomsRepository.create(createRoomDto);
@@ -25,7 +25,7 @@ export class RoomsService {
   }
 
   findOne(id: number) {
-    return this.roomsRepository.findOne({ where: { id } })
+    return this.roomsRepository.findOne({ where: { id } });
   }
 
   update(id: number, updateRoomDto: UpdateRoomDto) {

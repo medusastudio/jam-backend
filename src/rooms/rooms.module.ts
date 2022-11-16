@@ -9,6 +9,6 @@ import { StudiosService } from 'src/studios/studios.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Room, Studio])],
   controllers: [RoomsController],
-  providers: [RoomsService, StudiosService]
+  providers: [RoomsService, StudiosService],
 })
 export class RoomsModule {}

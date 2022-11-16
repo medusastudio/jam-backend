@@ -2,7 +2,14 @@ import { Country } from 'src/countries.enum';
 import { Genre } from 'src/genres/entities/genre.entity';
 import { Instrument } from 'src/instruments/entities/instrument.entity';
 import { Studio } from 'src/studios/entities/studio.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -27,12 +34,16 @@ export class User {
   @Column()
   city: string;
 
-  @OneToMany(() => Studio, studio => studio.user)
+  @OneToMany(() => Studio, (studio) => studio.user)
   studios: Studio[];
 
-  @ManyToMany(() => Instrument, instrument => instrument.user, { cascade: true })
-  instruments: Instrument[];
+  @ManyToMany(() => Instrument, (instrument) => instrument.users, {
+    cascade: true,
+  })
+  @JoinTable({ name: 'users_instruments' })
+  instruments: Instrument[] | { id: number }[];
 
-  @ManyToMany(() => Genre, genre => genre.user, { cascade: true })
-  genres: Genre[];
+  @ManyToMany(() => Genre, (genre) => genre.users, { cascade: true })
+  @JoinTable({ name: 'users_genres' })
+  genres: Genre[] | { id: number }[];
 }

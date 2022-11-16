@@ -10,7 +10,7 @@ export class StudiosService {
   constructor(
     @InjectRepository(Studio)
     private studiosRepository: Repository<Studio>,
-  ) { }
+  ) {}
 
   create(createStudioDto: CreateStudioDto) {
     return this.studiosRepository.create(createStudioDto);

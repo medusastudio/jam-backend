@@ -1,7 +1,13 @@
 import { Country } from 'src/countries.enum';
 import { Room } from 'src/rooms/entities/room.entity';
 import { User } from 'src/users/entities/user.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, Unique } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 
 @Entity()
 export class Studio {
@@ -37,8 +43,8 @@ export class Studio {
   booking?: string;
 
   @ManyToOne(() => User, { nullable: false })
-  user: User
+  user: User;
 
-  @OneToMany(() => Room, room => room.studio)
-  rooms: Room[]
+  @OneToMany(() => Room, (room) => room.studio)
+  rooms: Room[];
 }
