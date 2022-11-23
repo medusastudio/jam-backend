@@ -41,9 +41,9 @@ export class User {
     cascade: true,
   })
   @JoinTable({ name: 'users_instruments' })
-  instruments: Instrument[] | { id: number }[];
+  instruments: Instrument[];
 
   @ManyToMany(() => Genre, (genre) => genre.users, { cascade: true })
   @JoinTable({ name: 'users_genres' })
-  genres: Genre[] | { id: number }[];
+  genres: Genre[];
 }
