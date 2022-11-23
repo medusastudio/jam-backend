@@ -1,3 +1,6 @@
+import { StudiosService } from './studios.service';
+import { CreateStudioDto } from './dto/create-studio.dto';
+import { UpdateStudioDto } from './dto/update-studio.dto';
 import {
   Controller,
   Get,
@@ -7,9 +10,6 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { StudiosService } from './studios.service';
-import { CreateStudioDto } from './dto/create-studio.dto';
-import { UpdateStudioDto } from './dto/update-studio.dto';
 import { UsersService } from 'src/users/users.service';
 
 @Controller('studios')

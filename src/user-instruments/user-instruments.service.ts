@@ -1,8 +1,8 @@
+import { CreateUserInstrumentDto } from './dto/create-user-instrument.dto';
+import { UserInstrument } from './entities/user-instrument.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, Repository } from 'typeorm';
-import { CreateUserInstrumentDto } from './dto/create-user-instrument.dto';
-import { UserInstrument } from './entities/user-instrument.entity';
 
 @Injectable()
 export class UserInstrumentsService {

@@ -1,10 +1,10 @@
+import { CreateInstrumentDto } from './dto/create-instrument.dto';
+import { UpdateInstrumentDto } from './dto/update-instrument.dto';
+import { Instrument } from './entities/instrument.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Genre } from 'src/genres/entities/genre.entity';
 import { FindManyOptions, Repository } from 'typeorm';
-import { CreateInstrumentDto } from './dto/create-instrument.dto';
-import { UpdateInstrumentDto } from './dto/update-instrument.dto';
-import { Instrument } from './entities/instrument.entity';
 
 @Injectable()
 export class InstrumentsService {

@@ -1,11 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { faker } from '@faker-js/faker';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { faker } from '@faker-js/faker';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Test, TestingModule } from '@nestjs/testing';
 import { Country } from 'src/countries.enum';
 
 const UPDATE_ID = '1';
@@ -72,9 +71,7 @@ describe('UsersController', () => {
 
       const user = createMockUser(createUserDto);
 
-      jest
-        .spyOn(service, 'create')
-        .mockImplementation((_: CreateUserDto) => user);
+      jest.spyOn(service, 'create').mockImplementation(() => user);
 
       jest.spyOn(service, 'save').mockImplementation(async (user: User) => ({
         ...user,
@@ -94,7 +91,6 @@ describe('UsersController', () => {
 
   describe('findOne', () => {
     it('should return a user', () => {
-
       jest
         .spyOn(service, 'findOne')
         .mockImplementation(async (id: number) =>
@@ -107,7 +103,6 @@ describe('UsersController', () => {
 
   describe('update', () => {
     it('should update the user', () => {
-
       const updateUserDto = {
         email: 'ivan@gmail.com',
         firstName: 'Ivan',

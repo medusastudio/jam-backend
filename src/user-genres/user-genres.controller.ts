@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { UserGenresService } from './user-genres.service';
 import { CreateUserGenreDto } from './dto/create-user-genre.dto';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 
 @Controller('user-genres')
 export class UserGenresController {

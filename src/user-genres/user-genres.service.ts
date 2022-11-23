@@ -1,8 +1,8 @@
+import { CreateUserGenreDto } from './dto/create-user-genre.dto';
+import { UserGenre } from './entities/user-genre.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, Repository } from 'typeorm';
-import { CreateUserGenreDto } from './dto/create-user-genre.dto';
-import { UserGenre } from './entities/user-genre.entity';
 
 @Injectable()
 export class UserGenresService {

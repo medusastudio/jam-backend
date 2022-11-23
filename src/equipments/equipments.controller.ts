@@ -1,3 +1,6 @@
+import { EquipmentsService } from './equipments.service';
+import { CreateEquipmentDto } from './dto/create-equipment.dto';
+import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import {
   Controller,
   Get,
@@ -7,9 +10,6 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { EquipmentsService } from './equipments.service';
-import { CreateEquipmentDto } from './dto/create-equipment.dto';
-import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { EquipmentTypesService } from 'src/equipment-types/equipment-types.service';
 import { RoomsService } from 'src/rooms/rooms.service';
 

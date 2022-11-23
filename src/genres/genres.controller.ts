@@ -1,3 +1,6 @@
+import { GenresService } from './genres.service';
+import { CreateGenreDto } from './dto/create-genre.dto';
+import { UpdateGenreDto } from './dto/update-genre.dto';
 import {
   Controller,
   Get,
@@ -7,9 +10,6 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { GenresService } from './genres.service';
-import { CreateGenreDto } from './dto/create-genre.dto';
-import { UpdateGenreDto } from './dto/update-genre.dto';
 
 @Controller('genres')
 export class GenresController {

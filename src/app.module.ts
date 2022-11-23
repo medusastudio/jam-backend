@@ -1,5 +1,3 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './users/entities/user.entity';
@@ -20,6 +18,8 @@ import { UserInstrumentsModule } from './user-instruments/user-instruments.modul
 import { UserInstrument } from './user-instruments/entities/user-instrument.entity';
 import { UserGenre } from './user-genres/entities/user-genre.entity';
 import { UserGenresModule } from './user-genres/user-genres.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Module } from '@nestjs/common';
 
 @Module({
   imports: [

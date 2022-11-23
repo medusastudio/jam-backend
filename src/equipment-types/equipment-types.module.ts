@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
 import { EquipmentTypesService } from './equipment-types.service';
 import { EquipmentTypesController } from './equipment-types.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { EquipmentType } from './entities/equipment-type.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Module } from '@nestjs/common';
 
 @Module({
   imports: [TypeOrmModule.forFeature([EquipmentType])],

@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateEquipmentTypeDto } from './dto/create-equipment-type.dto';
 import { UpdateEquipmentTypeDto } from './dto/update-equipment-type.dto';
 import { EquipmentType } from './entities/equipment-type.entity';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class EquipmentTypesService {

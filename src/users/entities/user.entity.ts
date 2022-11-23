@@ -3,12 +3,12 @@ import { Genre } from 'src/genres/entities/genre.entity';
 import { Instrument } from 'src/instruments/entities/instrument.entity';
 import { Studio } from 'src/studios/entities/studio.entity';
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
-  OneToMany,
-  ManyToMany,
+  Entity,
   JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity()

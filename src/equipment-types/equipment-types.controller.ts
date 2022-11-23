@@ -1,3 +1,6 @@
+import { EquipmentTypesService } from './equipment-types.service';
+import { CreateEquipmentTypeDto } from './dto/create-equipment-type.dto';
+import { UpdateEquipmentTypeDto } from './dto/update-equipment-type.dto';
 import {
   Controller,
   Get,
@@ -7,9 +10,6 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { EquipmentTypesService } from './equipment-types.service';
-import { CreateEquipmentTypeDto } from './dto/create-equipment-type.dto';
-import { UpdateEquipmentTypeDto } from './dto/update-equipment-type.dto';
 
 @Controller('equipment-types')
 export class EquipmentTypesController {
