@@ -4,7 +4,7 @@ import { IsNotEmpty } from 'class-validator';
 export class CreateUserInstrumentDto {
   @ApiProperty()
   @IsNotEmpty()
-  userId: number;
+  userId: string;
 
   @ApiProperty()
   @IsNotEmpty()

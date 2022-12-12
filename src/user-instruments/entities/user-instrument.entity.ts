@@ -5,7 +5,7 @@ import { Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 @Entity()
 export class UserInstrument {
   @PrimaryColumn()
-  userId: number;
+  userId: string;
 
   @PrimaryColumn()
   instrumentId: number;

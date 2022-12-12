@@ -17,7 +17,7 @@ export class UserGenresController {
   }
 
   @Delete(':userId/:genreId')
-  remove(@Param('userId') userId: number, @Param('genreId') genreId: number) {
-    return this.userGenresService.remove(+userId, +genreId);
+  remove(@Param('userId') userId: string, @Param('genreId') genreId: number) {
+    return this.userGenresService.remove(userId, +genreId);
   }
 }

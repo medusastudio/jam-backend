@@ -23,11 +23,11 @@ export class UserGenresService {
     return this.userGenresRepository.find(options);
   }
 
-  findOne(userId: number, genreId: number) {
+  findOne(userId: string, genreId: number) {
     return this.userGenresRepository.findOne({ where: { userId, genreId } });
   }
 
-  remove(userId: number, genreId: number) {
+  remove(userId: string, genreId: number) {
     return this.userGenresRepository.delete({ userId, genreId });
   }
 }

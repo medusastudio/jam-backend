@@ -5,7 +5,7 @@ import { UsersService } from './users.service';
 import { faker } from '@faker-js/faker';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Country } from 'src/countries.enum';
+import { Country } from 'src/enums/countries.enum';
 
 const UPDATE_ID = '1';
 let increment = 0;

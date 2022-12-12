@@ -1,4 +1,5 @@
-import { Country } from 'src/countries.enum';
+import { Country } from 'src/enums/countries.enum';
+import { Role } from 'src/users/role.enum';
 import { Genre } from 'src/genres/entities/genre.entity';
 import { Instrument } from 'src/instruments/entities/instrument.entity';
 import { Studio } from 'src/studios/entities/studio.entity';
@@ -13,11 +14,14 @@ import {
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   email: string;
+
+  @Column()
+  password: string;
 
   @Column()
   firstName: string;
@@ -33,6 +37,13 @@ export class User {
 
   @Column()
   city: string;
+
+  @Column({
+    type: 'enum',
+    enum: Role,
+    default: Role.User,
+  })
+  role: Role;
 
   @OneToMany(() => Studio, (studio) => studio.user)
   studios: Studio[];

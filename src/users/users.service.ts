@@ -3,7 +3,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
@@ -20,19 +20,23 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  findAll() {
-    return this.usersRepository.find();
+  findAll(options?: FindManyOptions<User>) {
+    return this.usersRepository.find(options);
   }
 
-  findOne(id: number) {
+  findOne(options?: FindManyOptions<User>) {
+    return this.usersRepository.findOne(options);
+  }
+
+  findById(id: string) {
     return this.usersRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: UpdateUserDto) {
     return this.usersRepository.save({ id, ...updateUserDto });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.usersRepository.delete(+id);
   }
 }

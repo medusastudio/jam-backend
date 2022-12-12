@@ -1,4 +1,4 @@
-import { Country } from 'src/countries.enum';
+import { Country } from 'src/enums/countries.enum';
 import { Room } from 'src/rooms/entities/room.entity';
 import { User } from 'src/users/entities/user.entity';
 import {
@@ -44,6 +44,9 @@ export class Studio {
 
   @ManyToOne(() => User, { nullable: false })
   user: User;
+
+  @Column()
+  userId: string;
 
   @OneToMany(() => Room, (room) => room.studio)
   rooms: Room[];

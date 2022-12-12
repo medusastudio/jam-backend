@@ -23,13 +23,13 @@ export class UserInstrumentsService {
     return this.userInstrumentsRepository.find(options);
   }
 
-  findOne(userId: number, instrumentId: number) {
+  findOne(userId: string, instrumentId: number) {
     return this.userInstrumentsRepository.findOne({
       where: { userId, instrumentId },
     });
   }
 
-  remove(userId: number, instrumentId: number) {
+  remove(userId: string, instrumentId: number) {
     return this.userInstrumentsRepository.delete({ userId, instrumentId });
   }
 }

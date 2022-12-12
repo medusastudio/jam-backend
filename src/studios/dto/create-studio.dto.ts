@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsPhoneNumber,
 } from 'class-validator';
-import { Country } from 'src/countries.enum';
+import { Country } from 'src/enums/countries.enum';
 
 export class CreateStudioDto {
   @ApiProperty()
@@ -44,8 +44,4 @@ export class CreateStudioDto {
   })
   @IsOptional()
   booking?: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  userId: number;
 }

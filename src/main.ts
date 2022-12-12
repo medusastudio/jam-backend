@@ -7,6 +7,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
+    .addBearerAuth({ type: 'http' }, 'jwt')
     .setTitle('Jam API')
     .setDescription('Jam API documentation')
     .setVersion('1.0')

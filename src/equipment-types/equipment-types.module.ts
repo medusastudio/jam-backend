@@ -8,5 +8,6 @@ import { Module } from '@nestjs/common';
   imports: [TypeOrmModule.forFeature([EquipmentType])],
   controllers: [EquipmentTypesController],
   providers: [EquipmentTypesService],
+  exports: [EquipmentTypesService],
 })
 export class EquipmentTypesModule {}

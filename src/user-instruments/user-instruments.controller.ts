@@ -20,9 +20,9 @@ export class UserInstrumentsController {
 
   @Delete(':userId/:instrumentId')
   remove(
-    @Param('userId') userId: number,
+    @Param('userId') userId: string,
     @Param('instrumentId') instrumentId: number,
   ) {
-    return this.userInstrumentsService.remove(+userId, +instrumentId);
+    return this.userInstrumentsService.remove(userId, +instrumentId);
   }
 }

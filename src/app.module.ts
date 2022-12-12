@@ -18,6 +18,8 @@ import { UserInstrumentsModule } from './user-instruments/user-instruments.modul
 import { UserInstrument } from './user-instruments/entities/user-instrument.entity';
 import { UserGenre } from './user-genres/entities/user-genre.entity';
 import { UserGenresModule } from './user-genres/user-genres.module';
+import { AuthModule } from './auth/auth.module';
+import { CaslModule } from './casl/casl.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 
@@ -30,6 +32,7 @@ import { Module } from '@nestjs/common';
       username: 'medusa',
       password: 'medusa',
       database: 'jam',
+      schema: 'public',
       entities: [
         User,
         Studio,
@@ -41,6 +44,7 @@ import { Module } from '@nestjs/common';
         UserInstrument,
         UserGenre,
       ],
+      // autoLoadEntities: true,
       synchronize: true,
       // dropSchema: true,
     }),
@@ -53,6 +57,8 @@ import { Module } from '@nestjs/common';
     EquipmentTypesModule,
     UserInstrumentsModule,
     UserGenresModule,
+    AuthModule,
+    CaslModule,
   ],
   controllers: [AppController],
   providers: [AppService],

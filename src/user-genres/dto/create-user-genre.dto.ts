@@ -4,7 +4,7 @@ import { IsNotEmpty } from 'class-validator';
 export class CreateUserGenreDto {
   @ApiProperty()
   @IsNotEmpty()
-  userId: number;
+  userId: string;
 
   @ApiProperty()
   @IsNotEmpty()
