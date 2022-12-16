@@ -21,7 +21,7 @@ export class RoomsController {
 
   @Post()
   async create(@Body() createRoomDto: CreateRoomDto) {
-    const studio = await this.studiosService.findOne(createRoomDto.studioId);
+    const studio = await this.studiosService.findById(createRoomDto.studioId);
     const room = this.roomsService.create(createRoomDto);
     room.studio = studio;
     return this.roomsService.save(room);

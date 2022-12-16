@@ -1,38 +1,76 @@
 import { CreateStudioDto } from './dto/create-studio.dto';
 import { UpdateStudioDto } from './dto/update-studio.dto';
 import { Studio } from './entities/studio.entity';
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable, Scope } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
+import { REQUEST } from '@nestjs/core';
+import { JwtPayload } from 'src/auth/jwt.strategy';
+import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
+import { Action } from 'src/casl/action.enum';
+import { ForbiddenError } from '@casl/ability';
 
+@Injectable({ scope: Scope.REQUEST })
 @Injectable()
 export class StudiosService {
   constructor(
-    @InjectRepository(Studio)
-    private studiosRepository: Repository<Studio>,
+    @Inject(REQUEST) private request: Request & { user: JwtPayload },
+    @InjectRepository(Studio) private studiosRepository: Repository<Studio>,
+    private caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
   create(createStudioDto: CreateStudioDto) {
-    return this.studiosRepository.create(createStudioDto);
+    return this.studiosRepository.create({
+      ...createStudioDto,
+      userId: this.request.user.sub,
+    });
   }
 
-  save(studio: Studio) {
-    return this.studiosRepository.save(studio);
+  save(createStudioDto: CreateStudioDto) {
+    return this.studiosRepository.save(this.create(createStudioDto));
   }
 
-  findAll() {
-    return this.studiosRepository.find();
+  findAll(options?: FindManyOptions<Studio>) {
+    return this.studiosRepository.find(options);
   }
 
-  findOne(id: number) {
+  findOne(options?: FindManyOptions<Studio>) {
+    return this.studiosRepository.findOne(options);
+  }
+
+  findById(id: number) {
     return this.studiosRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updateStudioDto: UpdateStudioDto) {
-    return this.studiosRepository.update(+id, updateStudioDto);
+  async update(id: number, updateStudioDto: UpdateStudioDto) {
+    const studio = await this.findById(id);
+    const ability = this.caslAbilityFactory.createForUser(this.request.user);
+
+    try {
+      ForbiddenError.from(ability)
+        .setMessage('You can only manage your own studios')
+        .throwUnlessCan(Action.Update, studio);
+      return this.studiosRepository.update(+id, updateStudioDto);
+    } catch (err) {
+      if (err instanceof ForbiddenError) {
+        throw new ForbiddenException(err.message);
+      }
+    }
   }
 
-  remove(id: number) {
-    return this.studiosRepository.delete(+id);
+  async remove(id: number) {
+    const studio = await this.findById(id);
+    const ability = this.caslAbilityFactory.createForUser(this.request.user);
+
+    try {
+      ForbiddenError.from(ability)
+        .setMessage('You can only delete your own studios')
+        .throwUnlessCan(Action.Update, studio);
+      return this.studiosRepository.delete(+id);
+    } catch (err) {
+      if (err instanceof ForbiddenError) {
+        throw new ForbiddenException(err.message);
+      }
+    }
   }
 }

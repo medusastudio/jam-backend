@@ -9,37 +9,20 @@ import {
   Patch,
   Param,
   Delete,
-  Request,
   UseGuards,
 } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
-import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
-import { Action } from 'src/casl/action.enum';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { JwtPayload } from 'src/auth/jwt.strategy';
 
 @Controller('studios')
 export class StudiosController {
-  constructor(
-    private readonly studiosService: StudiosService,
-    private readonly usersService: UsersService,
-    private readonly caslAbilityFactory: CaslAbilityFactory,
-  ) {}
+  constructor(private readonly studiosService: StudiosService) {}
 
   @ApiBearerAuth('jwt')
   @UseGuards(JwtAuthGuard)
   @Post()
-  async create(
-    @Body() createStudioDto: CreateStudioDto,
-    @Request() request: Request & { user: JwtPayload },
-  ) {
-    const user = await this.usersService.findOne({
-      where: { email: request.user.email },
-    });
-    const studio = this.studiosService.create(createStudioDto);
-    studio.user = user;
-    return this.studiosService.save(studio);
+  async create(@Body() createStudioDto: CreateStudioDto) {
+    return this.studiosService.save(createStudioDto);
   }
 
   @Get()
@@ -49,7 +32,7 @@ export class StudiosController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.studiosService.findOne(+id);
+    return this.studiosService.findById(+id);
   }
 
   @ApiBearerAuth('jwt')
@@ -62,6 +45,8 @@ export class StudiosController {
     return this.studiosService.update(+id, updateStudioDto);
   }
 
+  @ApiBearerAuth('jwt')
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.studiosService.remove(+id);

@@ -45,7 +45,7 @@ import { Module } from '@nestjs/common';
         UserGenre,
       ],
       // autoLoadEntities: true,
-      synchronize: true,
+      // synchronize: true,
       // dropSchema: true,
     }),
     UsersModule,

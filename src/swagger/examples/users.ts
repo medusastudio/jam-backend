@@ -1,6 +1,6 @@
 export default {
   update: {
-    Default: {
+    Admin: {
       value: {
         email: 'email@jam.studio',
         password: 'password',
@@ -8,15 +8,16 @@ export default {
         lastName: 'Dunno',
         country: 'GE',
         city: 'Berlin',
+        role: 'user',
       },
     },
-    'Invalid country': {
+    User: {
       value: {
         email: 'email',
         password: 'password',
         firstName: 'Jan',
         lastName: 'Dunno',
-        country: 'XX',
+        country: 'GE',
         city: 'Hamburg',
       },
     },
