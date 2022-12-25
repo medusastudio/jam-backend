@@ -9,16 +9,20 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('instruments')
 export class InstrumentsController {
   constructor(private readonly instrumentsService: InstrumentsService) {}
 
+  @ApiBearerAuth('jwt')
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createInstrumentDto: CreateInstrumentDto) {
-    const instrument = this.instrumentsService.create(createInstrumentDto);
-    return this.instrumentsService.save(instrument);
+    return this.instrumentsService.save(createInstrumentDto);
   }
 
   @Get()
@@ -28,9 +32,11 @@ export class InstrumentsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.instrumentsService.findOne(+id);
+    return this.instrumentsService.findById(+id);
   }
 
+  @ApiBearerAuth('jwt')
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -39,6 +45,8 @@ export class InstrumentsController {
     return this.instrumentsService.update(+id, updateInstrumentDto);
   }
 
+  @ApiBearerAuth('jwt')
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.instrumentsService.remove(+id);

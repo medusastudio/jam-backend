@@ -24,7 +24,7 @@ export class EquipmentsController {
   @Post()
   async create(@Body() createEquipmentDto: CreateEquipmentDto) {
     const { roomId, equipmentTypeId } = createEquipmentDto;
-    const room = await this.roomsService.findOne(roomId);
+    const room = await this.roomsService.findById(roomId);
     const equipmentType = await this.equipmentTypesService.findOne(
       equipmentTypeId,
     );

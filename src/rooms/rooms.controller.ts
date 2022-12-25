@@ -9,22 +9,21 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
-import { StudiosService } from 'src/studios/studios.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('rooms')
 export class RoomsController {
-  constructor(
-    private readonly roomsService: RoomsService,
-    private readonly studiosService: StudiosService,
-  ) {}
+  constructor(private readonly roomsService: RoomsService) {}
 
+  @ApiBearerAuth('jwt')
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@Body() createRoomDto: CreateRoomDto) {
-    const studio = await this.studiosService.findById(createRoomDto.studioId);
-    const room = this.roomsService.create(createRoomDto);
-    room.studio = studio;
-    return this.roomsService.save(room);
+  create(@Body() createRoomDto: CreateRoomDto) {
+    console.log(createRoomDto);
+    return this.roomsService.save(createRoomDto);
   }
 
   @Get()
@@ -34,14 +33,18 @@ export class RoomsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.roomsService.findOne(+id);
+    return this.roomsService.findById(+id);
   }
 
+  @ApiBearerAuth('jwt')
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
     return this.roomsService.update(+id, updateRoomDto);
   }
 
+  @ApiBearerAuth('jwt')
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.roomsService.remove(+id);

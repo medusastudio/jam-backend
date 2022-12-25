@@ -11,9 +11,10 @@ import { User } from 'src/users/entities/user.entity';
 import { Role } from 'src/users/role.enum';
 import { Room } from 'src/rooms/entities/room.entity';
 import { JwtPayload } from 'src/auth/jwt.strategy';
+import { Instrument } from 'src/instruments/entities/instrument.entity';
 
 type Subjects =
-  | InferSubjects<typeof Studio | typeof User | typeof Room>
+  | InferSubjects<typeof Studio | typeof User | typeof Room | typeof Instrument>
   | 'all';
 
 export type AppAbility = MongoAbility<[Action, Subjects]>;
@@ -33,9 +34,6 @@ export class CaslAbilityFactory {
 
           // Studios
           can(Action.Manage, Studio, { userId: user.sub });
-
-          // Rooms
-          // can(Action.Manage, Room, { studio: { user: { id: user } });
         }
       },
       {
