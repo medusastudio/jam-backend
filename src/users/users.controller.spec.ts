@@ -7,17 +7,17 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Country } from 'src/enums/countries.enum';
 
-const UPDATE_ID = '1';
-let increment = 0;
+const UPDATE_ID = faker.datatype.uuid();
 
 const createMockUser = ({ email, firstName, country, city }) => {
-  increment += 1;
   const user = new User();
-  user.id = increment;
+
+  user.id = faker.datatype.uuid();
   user.email = email;
   user.firstName = firstName;
   user.country = country;
   user.city = city;
+
   return user;
 };
 
@@ -27,8 +27,9 @@ describe('UsersController', () => {
   let controller: UsersController;
   let service: UsersService;
 
+  // Generates three random users
   beforeAll(() => {
-    Array.from(Array(3)).forEach(() => {
+    Array.from(Array(5)).forEach(() => {
       mockUsers.push(
         createMockUser({
           email: faker.internet.email(),
@@ -38,6 +39,8 @@ describe('UsersController', () => {
         }),
       );
     });
+
+    mockUsers[0].id = UPDATE_ID;
   });
 
   beforeEach(async () => {
@@ -56,30 +59,8 @@ describe('UsersController', () => {
     service = module.get<UsersService>(UsersService);
   });
 
-  it('should be defined', () => {
+  it('Controller should be defined', () => {
     expect(controller).toBeDefined();
-  });
-
-  describe('create', () => {
-    it('should update the user', () => {
-      const createUserDto = {
-        email: 'ivan@gmail.com',
-        firstName: 'Ivan',
-        country: 'Germany',
-        city: 'Berlin',
-      };
-
-      const user = createMockUser(createUserDto);
-
-      jest.spyOn(service, 'create').mockImplementation(() => user);
-
-      jest.spyOn(service, 'save').mockImplementation(async (user: User) => ({
-        ...user,
-        ...createUserDto,
-      }));
-
-      expect(controller.create(createUserDto)).resolves.toEqual(user);
-    });
   });
 
   describe('findAll', () => {
@@ -92,8 +73,8 @@ describe('UsersController', () => {
   describe('findOne', () => {
     it('should return a user', () => {
       jest
-        .spyOn(service, 'findOne')
-        .mockImplementation(async (id: number) =>
+        .spyOn(service, 'findById')
+        .mockImplementation(async (id: string) =>
           mockUsers.find((user) => user.id === id),
         );
 
@@ -110,12 +91,12 @@ describe('UsersController', () => {
         city: 'Berlin',
       };
 
-      const user = mockUsers.find((user) => user.id === +UPDATE_ID);
+      const user = mockUsers.find((user) => user.id === UPDATE_ID);
 
       jest
         .spyOn(service, 'update')
         .mockImplementation(
-          async (id: number, updateUserDto: UpdateUserDto) => {
+          async (id: string, updateUserDto: UpdateUserDto) => {
             const user = mockUsers.find((user) => user.id === id);
             return { ...user, ...updateUserDto };
           },

@@ -5,10 +5,10 @@ import { ForbiddenException, Inject, Injectable, Scope } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, Repository } from 'typeorm';
 import { REQUEST } from '@nestjs/core';
+import { ForbiddenError } from '@casl/ability';
 import { JwtPayload } from 'src/auth/jwt.strategy';
 import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
 import { Action } from 'src/casl/action.enum';
-import { ForbiddenError } from '@casl/ability';
 
 @Injectable({ scope: Scope.REQUEST })
 @Injectable()
