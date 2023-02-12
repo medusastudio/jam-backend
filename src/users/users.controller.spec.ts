@@ -33,6 +33,7 @@ describe('UsersController', () => {
   describe('findAll', () => {
     it('should return an array of users', () => {
       const fakeUsers = generateUsers(5);
+
       const mockFindAll = jest.fn();
       mockFindAll.mockReturnValue(Promise.resolve(fakeUsers));
 
@@ -57,18 +58,18 @@ describe('UsersController', () => {
 
   describe('findOne', () => {
     const fakeUsers = generateUsers(5);
-    const TEST_ID = fakeUsers[0].id;
+    const { id } = fakeUsers[0];
 
     it('should return a user', () => {
-      const user = fakeUsers.find((user) => user.id === TEST_ID);
+      const user = fakeUsers.find((user) => user.id === id);
 
       const mockFindById = jest.fn();
       mockFindById.mockReturnValue(Promise.resolve(user));
 
       jest.spyOn(service, 'findById').mockImplementation(mockFindById);
 
-      expect(controller.findOne(TEST_ID)).resolves.toEqual(user);
-      expect(service.findById).toHaveBeenCalledWith(TEST_ID);
+      expect(controller.findOne(id)).resolves.toEqual(user);
+      expect(service.findById).toHaveBeenCalledWith(id);
     });
 
     it('should handle errors when finding the user', async () => {
@@ -79,14 +80,14 @@ describe('UsersController', () => {
 
       jest.spyOn(service, 'findById').mockImplementation(mockFindById);
 
-      expect(controller.findOne(TEST_ID)).rejects.toThrow(error);
-      expect(service.findById).toHaveBeenCalledWith(TEST_ID);
+      expect(controller.findOne(id)).rejects.toThrow(error);
+      expect(service.findById).toHaveBeenCalledWith(id);
     });
   });
 
   describe('update', () => {
     const fakeUsers = generateUsers(5);
-    const TEST_ID = fakeUsers[0].id;
+    const { id } = fakeUsers[0];
 
     it('should update the user', () => {
       const updateUserDto: UpdateUserDto = {
@@ -96,7 +97,7 @@ describe('UsersController', () => {
         city: 'Berlin',
       };
 
-      const user = fakeUsers.find((user) => user.id === TEST_ID);
+      const user = fakeUsers.find((user) => user.id === id);
       const expectedResult = { ...user, ...updateUserDto };
 
       const mockUpdate = jest.fn();
@@ -104,10 +105,10 @@ describe('UsersController', () => {
 
       jest.spyOn(service, 'update').mockImplementation(mockUpdate);
 
-      expect(controller.update(TEST_ID, updateUserDto)).resolves.toEqual(
+      expect(controller.update(id, updateUserDto)).resolves.toEqual(
         expectedResult,
       );
-      expect(service.update).toHaveBeenCalledWith(TEST_ID, updateUserDto);
+      expect(service.update).toHaveBeenCalledWith(id, updateUserDto);
     });
 
     it('should handle errors when updating the user', async () => {
@@ -118,14 +119,14 @@ describe('UsersController', () => {
 
       jest.spyOn(service, 'update').mockImplementation(mockUpdate);
 
-      expect(controller.update(TEST_ID, {})).rejects.toThrow(error);
-      expect(service.update).toHaveBeenCalledWith(TEST_ID, {});
+      expect(controller.update(id, {})).rejects.toThrow(error);
+      expect(service.update).toHaveBeenCalledWith(id, {});
     });
   });
 
   describe('remove', () => {
     const fakeUsers = generateUsers(5);
-    const TEST_ID = fakeUsers[0].id;
+    const { id } = fakeUsers[0];
 
     it('should remove the user', () => {
       const deleteResult = { affected: 1, raw: [{ affected: 1 }] };
@@ -135,8 +136,8 @@ describe('UsersController', () => {
 
       jest.spyOn(service, 'remove').mockImplementation(mockDelete);
 
-      expect(controller.remove(TEST_ID)).resolves.toEqual(deleteResult);
-      expect(service.remove).toHaveBeenCalledWith(TEST_ID);
+      expect(controller.remove(id)).resolves.toEqual(deleteResult);
+      expect(service.remove).toHaveBeenCalledWith(id);
     });
 
     it('should handle errors when removing the user', async () => {
@@ -147,8 +148,8 @@ describe('UsersController', () => {
 
       jest.spyOn(service, 'remove').mockImplementation(mockDelete);
 
-      expect(controller.remove(TEST_ID)).rejects.toThrow(error);
-      expect(service.remove).toHaveBeenCalledWith(TEST_ID);
+      expect(controller.remove(id)).rejects.toThrow(error);
+      expect(service.remove).toHaveBeenCalledWith(id);
     });
   });
 });

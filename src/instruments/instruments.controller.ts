@@ -32,7 +32,7 @@ export class InstrumentsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.instrumentsService.findById(+id);
+    return this.instrumentsService.findById(id);
   }
 
   @ApiBearerAuth('jwt')
@@ -42,13 +42,13 @@ export class InstrumentsController {
     @Param('id') id: string,
     @Body() updateInstrumentDto: UpdateInstrumentDto,
   ) {
-    return this.instrumentsService.update(+id, updateInstrumentDto);
+    return this.instrumentsService.update(id, updateInstrumentDto);
   }
 
   @ApiBearerAuth('jwt')
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.instrumentsService.remove(+id);
+    return this.instrumentsService.remove(id);
   }
 }

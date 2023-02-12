@@ -46,11 +46,11 @@ export class InstrumentsService {
     return this.instrumentsRepository.findOne(options);
   }
 
-  findById(id: number) {
+  findById(id: string) {
     return this.instrumentsRepository.findOne({ where: { id } });
   }
 
-  update(id: number, updateInstrumentDto: UpdateInstrumentDto) {
+  update(id: string, updateInstrumentDto: UpdateInstrumentDto) {
     const ability = this.caslAbilityFactory.createForUser(this.request.user);
 
     try {
@@ -65,7 +65,7 @@ export class InstrumentsService {
     }
   }
 
-  remove(id: number) {
+  remove(id: string) {
     const ability = this.caslAbilityFactory.createForUser(this.request.user);
 
     try {

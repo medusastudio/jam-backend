@@ -7,7 +7,7 @@ import { CaslModule } from 'src/casl/casl.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Instrument]), CaslModule],
-  controllers: [InstrumentsController],
   providers: [InstrumentsService],
+  controllers: [InstrumentsController],
 })
 export class InstrumentsModule {}
