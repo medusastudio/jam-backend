@@ -46,15 +46,15 @@ export class User {
   role: Role;
 
   @OneToMany(() => Studio, (studio) => studio.user)
-  studios: Studio[];
+  studios?: Studio[];
 
   @ManyToMany(() => Instrument, (instrument) => instrument.users, {
     cascade: true,
   })
   @JoinTable({ name: 'users_instruments' })
-  instruments: Instrument[];
+  instruments?: Instrument[];
 
   @ManyToMany(() => Genre, (genre) => genre.users, { cascade: true })
   @JoinTable({ name: 'users_genres' })
-  genres: Genre[];
+  genres?: Genre[];
 }
