@@ -95,4 +95,62 @@ describe('InstrumentsController', () => {
       expect(service.findById).toHaveBeenCalledWith(id);
     });
   });
+
+  describe('update', () => {
+    const fakeInstrument = generateInstrument();
+    const { id } = fakeInstrument;
+
+    it('should update an instrument', () => {
+      const updateInstrumentDto = { name: 'new name' };
+
+      const mockUpdate = jest.fn();
+      mockUpdate.mockReturnValue(Promise.resolve(fakeInstrument));
+
+      jest.spyOn(service, 'update').mockImplementation(mockUpdate);
+
+      expect(controller.update(id, updateInstrumentDto)).resolves.toEqual(
+        fakeInstrument,
+      );
+      expect(service.update).toHaveBeenCalledWith(id, updateInstrumentDto);
+    });
+
+    it('should handle errors when updating an instrument', () => {
+      const error = new Error('Error updating an instrument');
+
+      const mockUpdate = jest.fn();
+      mockUpdate.mockReturnValue(Promise.reject(error));
+
+      jest.spyOn(service, 'update').mockImplementation(mockUpdate);
+
+      expect(controller.update(id, {})).rejects.toThrow(error);
+      expect(service.update).toHaveBeenCalledWith(id, {});
+    });
+  });
+
+  describe('remove', () => {
+    const fakeInstrument = generateInstrument();
+    const { id } = fakeInstrument;
+
+    it('should delete an instrument', () => {
+      const mockRemove = jest.fn();
+      mockRemove.mockReturnValue(Promise.resolve());
+
+      jest.spyOn(service, 'remove').mockImplementation(mockRemove);
+
+      expect(controller.remove(id)).resolves.toBeUndefined();
+      expect(service.remove).toHaveBeenCalledWith(id);
+    });
+
+    it('should handle errors when deleting an instrument', () => {
+      const error = new Error('Error deleting an instrument');
+
+      const mockRemove = jest.fn();
+      mockRemove.mockReturnValue(Promise.reject(error));
+
+      jest.spyOn(service, 'remove').mockImplementation(mockRemove);
+
+      expect(controller.remove(id)).rejects.toThrow(error);
+      expect(service.remove).toHaveBeenCalledWith(id);
+    });
+  });
 });

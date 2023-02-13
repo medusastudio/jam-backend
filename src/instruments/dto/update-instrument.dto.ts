@@ -6,5 +6,5 @@ export class UpdateInstrumentDto {
     nullable: true,
   })
   @IsOptional()
-  name: string;
+  name?: string;
 }

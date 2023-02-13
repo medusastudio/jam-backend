@@ -2,7 +2,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
-import { generateUsers } from './users.fixtures';
+import { generateUser, generateUsers } from './users.fixtures';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
 
@@ -57,18 +57,16 @@ describe('UsersController', () => {
   });
 
   describe('findOne', () => {
-    const fakeUsers = generateUsers(5);
-    const { id } = fakeUsers[0];
+    const fakeUser = generateUser();
+    const { id } = fakeUser;
 
     it('should return a user', () => {
-      const user = fakeUsers.find((user) => user.id === id);
-
       const mockFindById = jest.fn();
-      mockFindById.mockReturnValue(Promise.resolve(user));
+      mockFindById.mockReturnValue(Promise.resolve(fakeUser));
 
       jest.spyOn(service, 'findById').mockImplementation(mockFindById);
 
-      expect(controller.findOne(id)).resolves.toEqual(user);
+      expect(controller.findOne(id)).resolves.toEqual(fakeUser);
       expect(service.findById).toHaveBeenCalledWith(id);
     });
 
@@ -86,8 +84,8 @@ describe('UsersController', () => {
   });
 
   describe('update', () => {
-    const fakeUsers = generateUsers(5);
-    const { id } = fakeUsers[0];
+    const fakeUser = generateUser();
+    const { id } = fakeUser;
 
     it('should update the user', () => {
       const updateUserDto: UpdateUserDto = {
@@ -96,9 +94,7 @@ describe('UsersController', () => {
         country: 'Germany',
         city: 'Berlin',
       };
-
-      const user = fakeUsers.find((user) => user.id === id);
-      const expectedResult = { ...user, ...updateUserDto };
+      const expectedResult = { ...fakeUser, ...updateUserDto };
 
       const mockUpdate = jest.fn();
       mockUpdate.mockReturnValue(Promise.resolve(expectedResult));
@@ -125,8 +121,8 @@ describe('UsersController', () => {
   });
 
   describe('remove', () => {
-    const fakeUsers = generateUsers(5);
-    const { id } = fakeUsers[0];
+    const fakeUser = generateUser();
+    const { id } = fakeUser;
 
     it('should remove the user', () => {
       const deleteResult = { affected: 1, raw: [{ affected: 1 }] };

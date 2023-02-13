@@ -32,6 +32,7 @@ export class InstrumentsService {
         .throwUnlessCan(Action.Create, Instrument);
       return this.instrumentsRepository.save(this.create(createInstrumentDto));
     } catch (err) {
+      console.log(err);
       if (err instanceof ForbiddenError) {
         throw new ForbiddenException(err.message);
       }
@@ -56,8 +57,8 @@ export class InstrumentsService {
     try {
       ForbiddenError.from(ability)
         .setMessage('Only admins can manage instruments')
-        .throwUnlessCan(Action.Create, Instrument);
-      return this.instrumentsRepository.update(+id, updateInstrumentDto);
+        .throwUnlessCan(Action.Update, Instrument);
+      return this.instrumentsRepository.update(id, updateInstrumentDto);
     } catch (err) {
       if (err instanceof ForbiddenError) {
         throw new ForbiddenException(err.message);
@@ -71,8 +72,8 @@ export class InstrumentsService {
     try {
       ForbiddenError.from(ability)
         .setMessage('Only admins can manage instruments')
-        .throwUnlessCan(Action.Create, Instrument);
-      return this.instrumentsRepository.delete(+id);
+        .throwUnlessCan(Action.Delete, Instrument);
+      return this.instrumentsRepository.delete(id);
     } catch (err) {
       if (err instanceof ForbiddenError) {
         throw new ForbiddenException(err.message);
