@@ -12,9 +12,16 @@ import { Role } from 'src/users/role.enum';
 import { Room } from 'src/rooms/entities/room.entity';
 import { JwtPayload } from 'src/auth/jwt.strategy';
 import { Instrument } from 'src/instruments/entities/instrument.entity';
+import { Genre } from 'src/genres/entities/genre.entity';
 
 type Subjects =
-  | InferSubjects<typeof Studio | typeof User | typeof Room | typeof Instrument>
+  | InferSubjects<
+      | typeof Studio
+      | typeof User
+      | typeof Room
+      | typeof Instrument
+      | typeof Genre
+    >
   | 'all';
 
 export type AppAbility = MongoAbility<[Action, Subjects]>;

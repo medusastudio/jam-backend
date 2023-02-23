@@ -13,7 +13,8 @@ import { Action } from 'src/casl/action.enum';
 @Injectable()
 export class InstrumentsService {
   constructor(
-    @Inject(REQUEST) private request: Request & { user: JwtPayload },
+    @Inject(REQUEST)
+    private request: Request & { user: JwtPayload },
     @InjectRepository(Instrument)
     private instrumentsRepository: Repository<Instrument>,
     private caslAbilityFactory: CaslAbilityFactory,
