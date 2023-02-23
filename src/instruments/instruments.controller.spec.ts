@@ -10,6 +10,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
 import { REQUEST } from '@nestjs/core';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
 describe('InstrumentsController', () => {
   let controller: InstrumentsController;
@@ -44,25 +45,19 @@ describe('InstrumentsController', () => {
   });
 
   describe('findAll', () => {
-    it('should return an array of instruments', () => {
+    it('should return all instruments', () => {
       const fakeInstruments = generateInstruments(5);
 
-      const mockFindAll = jest.fn();
-      mockFindAll.mockReturnValue(Promise.resolve(fakeInstruments));
-
-      jest.spyOn(service, 'findAll').mockImplementation(mockFindAll);
+      jest.spyOn(service, 'findAll').mockResolvedValue(fakeInstruments);
 
       expect(controller.findAll()).resolves.toEqual(fakeInstruments);
       expect(service.findAll).toHaveBeenCalled();
     });
 
-    it('should handle errors when finding all instruments', () => {
+    it('should throw an error if fails to return all instruments', () => {
       const error = new Error('Error finding all instruments');
 
-      const mockFindAll = jest.fn();
-      mockFindAll.mockReturnValue(Promise.reject(error));
-
-      jest.spyOn(service, 'findAll').mockImplementation(mockFindAll);
+      jest.spyOn(service, 'findAll').mockRejectedValue(error);
 
       expect(controller.findAll()).rejects.toThrow(error);
       expect(service.findAll).toHaveBeenCalled();
@@ -70,87 +65,65 @@ describe('InstrumentsController', () => {
   });
 
   describe('findOne', () => {
-    const fakeInstrument = generateInstrument();
-    const { id } = fakeInstrument;
+    it('should return the instrument', () => {
+      const fakeInstrument = generateInstrument();
 
-    it('should return an instrument', () => {
-      const mockFindById = jest.fn();
-      mockFindById.mockReturnValue(Promise.resolve(fakeInstrument));
+      jest.spyOn(service, 'findById').mockResolvedValue(fakeInstrument);
 
-      jest.spyOn(service, 'findById').mockImplementation(mockFindById);
-
-      expect(controller.findOne(id)).resolves.toEqual(fakeInstrument);
-      expect(service.findById).toHaveBeenCalledWith(id);
+      expect(controller.findOne('id')).resolves.toEqual(fakeInstrument);
+      expect(service.findById).toHaveBeenCalledWith('id');
     });
 
-    it('should handle errors when finding an instrument', () => {
-      const error = new Error('Error finding an instrument');
+    it('should throw an error if fails to find the instrument', () => {
+      const error = new Error('Error finding the instrument');
 
-      const mockFindById = jest.fn();
-      mockFindById.mockReturnValue(Promise.reject(error));
+      jest.spyOn(service, 'findById').mockRejectedValue(error);
 
-      jest.spyOn(service, 'findById').mockImplementation(mockFindById);
-
-      expect(controller.findOne(id)).rejects.toThrow(error);
-      expect(service.findById).toHaveBeenCalledWith(id);
+      expect(controller.findOne('id')).rejects.toThrow(error);
+      expect(service.findById).toHaveBeenCalledWith('id');
     });
   });
 
   describe('update', () => {
-    const fakeInstrument = generateInstrument();
-    const { id } = fakeInstrument;
+    it('should update the instrument', () => {
+      const updateInstrumentDto = {};
+      const updateResult: UpdateResult = { raw: {}, generatedMaps: [] };
 
-    it('should update an instrument', () => {
-      const updateInstrumentDto = { name: 'new name' };
+      jest.spyOn(service, 'update').mockResolvedValue(updateResult);
 
-      const mockUpdate = jest.fn();
-      mockUpdate.mockReturnValue(Promise.resolve(fakeInstrument));
-
-      jest.spyOn(service, 'update').mockImplementation(mockUpdate);
-
-      expect(controller.update(id, updateInstrumentDto)).resolves.toEqual(
-        fakeInstrument,
+      expect(controller.update('id', updateInstrumentDto)).resolves.toEqual(
+        updateResult,
       );
-      expect(service.update).toHaveBeenCalledWith(id, updateInstrumentDto);
+      expect(service.update).toHaveBeenCalledWith('id', updateInstrumentDto);
     });
 
-    it('should handle errors when updating an instrument', () => {
-      const error = new Error('Error updating an instrument');
+    it('should handle errors when updating the instrument', () => {
+      const error = new Error('Error updating the instrument');
 
-      const mockUpdate = jest.fn();
-      mockUpdate.mockReturnValue(Promise.reject(error));
+      jest.spyOn(service, 'update').mockRejectedValue(error);
 
-      jest.spyOn(service, 'update').mockImplementation(mockUpdate);
-
-      expect(controller.update(id, {})).rejects.toThrow(error);
-      expect(service.update).toHaveBeenCalledWith(id, {});
+      expect(controller.update('id', {})).rejects.toThrow(error);
+      expect(service.update).toHaveBeenCalledWith('id', {});
     });
   });
 
   describe('remove', () => {
-    const fakeInstrument = generateInstrument();
-    const { id } = fakeInstrument;
+    it('should delete the instrument', () => {
+      const deleteResult: DeleteResult = { raw: {} };
 
-    it('should delete an instrument', () => {
-      const mockRemove = jest.fn();
-      mockRemove.mockReturnValue(Promise.resolve());
+      jest.spyOn(service, 'remove').mockResolvedValue(deleteResult);
 
-      jest.spyOn(service, 'remove').mockImplementation(mockRemove);
-
-      expect(controller.remove(id)).resolves.toBeUndefined();
-      expect(service.remove).toHaveBeenCalledWith(id);
+      expect(controller.remove('id')).resolves.toEqual(deleteResult);
+      expect(service.remove).toHaveBeenCalledWith('id');
     });
 
-    it('should handle errors when deleting an instrument', () => {
-      const error = new Error('Error deleting an instrument');
+    it('should handle errors when deleting the instrument', () => {
+      const error = new Error('Error deleting the instrument');
 
-      const mockRemove = jest.fn();
-      mockRemove.mockReturnValue(Promise.reject(error));
+      jest.spyOn(service, 'remove').mockRejectedValue(error);
 
-      jest.spyOn(service, 'remove').mockImplementation(mockRemove);
-
-      expect(controller.remove(id)).rejects.toThrow(error);
-      expect(service.remove).toHaveBeenCalledWith(id);
+      expect(controller.remove('id')).rejects.toThrow(error);
+      expect(service.remove).toHaveBeenCalledWith('id');
     });
   });
 });

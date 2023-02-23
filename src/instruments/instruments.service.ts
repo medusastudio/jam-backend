@@ -19,6 +19,18 @@ export class InstrumentsService {
     private caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
+  findAll(options?: FindManyOptions<Instrument>) {
+    return this.instrumentsRepository.find(options);
+  }
+
+  findOne(options?: FindManyOptions<Instrument>) {
+    return this.instrumentsRepository.findOne(options);
+  }
+
+  findById(id: string) {
+    return this.instrumentsRepository.findOne({ where: { id } });
+  }
+
   create(createInstrumentDto: CreateInstrumentDto) {
     return this.instrumentsRepository.create(createInstrumentDto);
   }
@@ -32,23 +44,10 @@ export class InstrumentsService {
         .throwUnlessCan(Action.Create, Instrument);
       return this.instrumentsRepository.save(this.create(createInstrumentDto));
     } catch (err) {
-      console.log(err);
       if (err instanceof ForbiddenError) {
         throw new ForbiddenException(err.message);
       }
     }
-  }
-
-  findAll(options?: FindManyOptions<Instrument>) {
-    return this.instrumentsRepository.find(options);
-  }
-
-  findOne(options?: FindManyOptions<Instrument>) {
-    return this.instrumentsRepository.findOne(options);
-  }
-
-  findById(id: string) {
-    return this.instrumentsRepository.findOne({ where: { id } });
   }
 
   update(id: string, updateInstrumentDto: UpdateInstrumentDto) {

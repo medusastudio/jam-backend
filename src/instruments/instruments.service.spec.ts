@@ -2,10 +2,18 @@ import { Instrument } from './entities/instrument.entity';
 import { InstrumentsService } from './instruments.service';
 import { CreateInstrumentDto } from './dto/create-instrument.dto';
 import { UpdateInstrumentDto } from './dto/update-instrument.dto';
-import { generateInstrument } from './instruments.fixtures';
+import {
+  generateInstrument,
+  generateInstruments,
+} from './instruments.fixtures';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import {
+  DeleteResult,
+  FindManyOptions,
+  Repository,
+  UpdateResult,
+} from 'typeorm';
 import { CaslAbilityFactory } from 'src/casl/casl-ability.factory';
 import { REQUEST } from '@nestjs/core';
 import { ForbiddenException } from '@nestjs/common';
@@ -44,7 +52,7 @@ describe('InstrumentsService', () => {
     request = module.get(REQUEST);
   });
 
-  it('should be defined', () => {
+  it('Service should be defined', () => {
     expect(service).toBeDefined();
   });
 
@@ -55,57 +63,79 @@ describe('InstrumentsService', () => {
       };
       const fakeInstrument = generateInstrument(createInstrumentDto);
 
-      const mockCreate = jest.fn();
-      mockCreate.mockReturnValue(fakeInstrument);
-
-      jest.spyOn(repository, 'create').mockImplementation(mockCreate);
+      jest.spyOn(repository, 'create').mockReturnValue(fakeInstrument);
 
       expect(service.create(createInstrumentDto)).toEqual(fakeInstrument);
       expect(repository.create).toHaveBeenCalledWith(createInstrumentDto);
     });
   });
 
+  describe('findAll', () => {
+    it('should return all instruments', () => {
+      const fakeInstruments = generateInstruments(5);
+      const options: FindManyOptions<Instrument> = {};
+
+      jest.spyOn(repository, 'find').mockResolvedValue(fakeInstruments);
+
+      expect(service.findAll(options)).resolves.toEqual(fakeInstruments);
+      expect(repository.find).toHaveBeenCalledWith(options);
+    });
+
+    it('should throw an error if fails to return all instruments', () => {
+      const error = new Error('Error finding instruments');
+      const options: FindManyOptions<Instrument> = {};
+
+      jest.spyOn(repository, 'find').mockRejectedValue(error);
+
+      expect(service.findAll(options)).rejects.toThrow(error);
+      expect(repository.find).toHaveBeenCalledWith(options);
+    });
+  });
+
+  describe('findOne', () => {
+    it('should return the instrument by search options', () => {
+      const fakeInstrument = generateInstrument();
+      const options: FindManyOptions<Instrument> = {};
+
+      jest.spyOn(repository, 'findOne').mockResolvedValue(fakeInstrument);
+
+      expect(service.findOne(options)).resolves.toEqual(fakeInstrument);
+      expect(repository.findOne).toHaveBeenCalledWith(options);
+    });
+
+    it('should throw an error if fails to find the instument by search options', () => {
+      const error = new Error('Error finding instruments');
+      const options: FindManyOptions<Instrument> = {};
+
+      jest.spyOn(repository, 'findOne').mockRejectedValue(error);
+
+      expect(service.findOne(options)).rejects.toThrow(error);
+      expect(repository.findOne).toHaveBeenCalledWith(options);
+    });
+  });
+
+  describe('findById', () => {
+    it('should find the instrument by ID', () => {
+      const fakeInstrument = generateInstrument();
+
+      jest.spyOn(repository, 'findOne').mockResolvedValue(fakeInstrument);
+
+      expect(service.findById('id')).resolves.toEqual(fakeInstrument);
+      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 'id' } });
+    });
+
+    it('should throw an error if fails to find the user by ID', () => {
+      const error = new Error('Error finding the user');
+
+      jest.spyOn(repository, 'findOne').mockRejectedValue(error);
+
+      expect(service.findById('id')).rejects.toThrow(error);
+      expect(repository.findOne).toHaveBeenCalledWith({ where: { id: 'id' } });
+    });
+  });
+
   describe('save', () => {
-    it('should save a new instrument', () => {
-      const createInstrumentDto: CreateInstrumentDto = {
-        name: 'Guitar',
-      };
-      const fakeInstrument = generateInstrument(createInstrumentDto);
-      request.user = {
-        email: faker.internet.email(),
-        sub: faker.datatype.uuid(),
-        role: Role.Admin,
-      };
-
-      const mockSave = jest.fn();
-      mockSave.mockReturnValue(Promise.resolve(fakeInstrument));
-
-      jest.spyOn(service, 'create').mockReturnValue(fakeInstrument);
-      jest.spyOn(repository, 'save').mockImplementation(mockSave);
-
-      expect(service.save(createInstrumentDto)).resolves.toEqual(
-        fakeInstrument,
-      );
-      expect(repository.save).toHaveBeenCalledWith(fakeInstrument);
-    });
-
-    it('should throw a ForbiddenException if user is not authorized', () => {
-      const createInstrumentDto: CreateInstrumentDto = {
-        name: 'Guitar',
-      };
-      request.user = {
-        email: faker.internet.email(),
-        sub: faker.datatype.uuid(),
-        role: Role.User,
-      };
-
-      expect(() => service.save(createInstrumentDto)).toThrow(
-        ForbiddenException,
-      );
-    });
-
-    it('should throw an error if repository fails to save an instrument', () => {
-      const error = new Error('Failed to save instrument');
+    it('should save a instrument', () => {
       const fakeInstrument = generateInstrument();
       request.user = {
         email: faker.internet.email(),
@@ -113,11 +143,35 @@ describe('InstrumentsService', () => {
         role: Role.Admin,
       };
 
-      const mockSave = jest.fn();
-      mockSave.mockReturnValue(Promise.reject(error));
+      jest.spyOn(service, 'create').mockReturnValue(fakeInstrument);
+      jest.spyOn(repository, 'save').mockResolvedValue(fakeInstrument);
+
+      expect(service.save(fakeInstrument)).resolves.toEqual(fakeInstrument);
+      expect(repository.save).toHaveBeenCalledWith(fakeInstrument);
+    });
+
+    it('should throw a ForbiddenException if user is not authorized', () => {
+      const fakeInstrument = generateInstrument();
+      request.user = {
+        email: faker.internet.email(),
+        sub: faker.datatype.uuid(),
+        role: Role.User,
+      };
+
+      expect(() => service.save(fakeInstrument)).toThrow(ForbiddenException);
+    });
+
+    it('should throw an error if fails to save an instrument', () => {
+      const error = new Error('Error saving an instrument');
+      const fakeInstrument = generateInstrument();
+      request.user = {
+        email: faker.internet.email(),
+        sub: faker.datatype.uuid(),
+        role: Role.Admin,
+      };
 
       jest.spyOn(service, 'create').mockReturnValue(fakeInstrument);
-      jest.spyOn(repository, 'save').mockImplementation(mockSave);
+      jest.spyOn(repository, 'save').mockRejectedValue(error);
 
       expect(service.save(fakeInstrument)).rejects.toThrow(error);
       expect(repository.save).toHaveBeenCalledWith(fakeInstrument);
@@ -125,114 +179,88 @@ describe('InstrumentsService', () => {
   });
 
   describe('update', () => {
-    it('should update an instrument', () => {
-      const updateInstrumentDto: UpdateInstrumentDto = {
-        name: 'Guitar',
-      };
-      const fakeInstrument = generateInstrument(updateInstrumentDto);
-      const { id } = fakeInstrument;
+    it('should update the instrument', () => {
+      const updateInstrumentDto: UpdateInstrumentDto = {};
+      const updateResult: UpdateResult = { raw: {}, generatedMaps: [] };
       request.user = {
         email: faker.internet.email(),
         sub: faker.datatype.uuid(),
         role: Role.Admin,
       };
 
-      const mockUpdate = jest.fn();
-      mockUpdate.mockReturnValue(Promise.resolve(fakeInstrument));
+      jest.spyOn(repository, 'update').mockResolvedValue(updateResult);
 
-      jest.spyOn(repository, 'update').mockImplementation(mockUpdate);
-
-      expect(service.update(id, updateInstrumentDto)).resolves.toEqual(
-        fakeInstrument,
+      expect(service.update('id', updateInstrumentDto)).resolves.toEqual(
+        updateResult,
       );
-      expect(repository.update).toHaveBeenCalledWith(id, updateInstrumentDto);
+      expect(repository.update).toHaveBeenCalledWith('id', updateInstrumentDto);
     });
 
     it('should throw a ForbiddenException if user is not authorized', () => {
-      const updateInstrumentDto: UpdateInstrumentDto = {
-        name: 'Guitar',
-      };
-      const fakeInstrument = generateInstrument(updateInstrumentDto);
-      const { id } = fakeInstrument;
+      const updateInstrumentDto: UpdateInstrumentDto = {};
       request.user = {
         email: faker.internet.email(),
         sub: faker.datatype.uuid(),
         role: Role.User,
       };
 
-      expect(() => service.update(id, updateInstrumentDto)).toThrow(
+      expect(() => service.update('id', updateInstrumentDto)).toThrow(
         ForbiddenException,
       );
     });
 
-    it('should throw an error if repository fails to update an instrument', () => {
-      const error = new Error('Failed to update instrument');
-      const fakeInstrument = generateInstrument();
-      const { id } = fakeInstrument;
+    it('should throw an error if fails to update the instrument', () => {
+      const error = new Error('Error updating the instrument');
       request.user = {
         email: faker.internet.email(),
         sub: faker.datatype.uuid(),
         role: Role.Admin,
       };
 
-      const mockUpdate = jest.fn();
-      mockUpdate.mockReturnValue(Promise.reject(error));
+      jest.spyOn(repository, 'update').mockRejectedValue(error);
 
-      jest.spyOn(repository, 'update').mockImplementation(mockUpdate);
-
-      expect(service.update(id, {})).rejects.toThrow(error);
-      expect(repository.update).toHaveBeenCalledWith(id, {});
+      expect(service.update('id', {})).rejects.toThrow(error);
+      expect(repository.update).toHaveBeenCalledWith('id', {});
     });
   });
 
   describe('remove', () => {
-    it('should delete an instrument', () => {
-      const fakeInstrument = generateInstrument();
-      const { id } = fakeInstrument;
+    it('should delete the instrument', () => {
+      const deleteResult: DeleteResult = { raw: {} };
       request.user = {
         email: faker.internet.email(),
         sub: faker.datatype.uuid(),
         role: Role.Admin,
       };
 
-      const mockDelete = jest.fn();
-      mockDelete.mockReturnValue(Promise.resolve());
+      jest.spyOn(repository, 'delete').mockResolvedValue(deleteResult);
 
-      jest.spyOn(repository, 'delete').mockImplementation(mockDelete);
-
-      expect(service.remove(id)).resolves.toBeUndefined();
-      expect(repository.delete).toHaveBeenCalledWith(id);
+      expect(service.remove('id')).resolves.toEqual(deleteResult);
+      expect(repository.delete).toHaveBeenCalledWith('id');
     });
 
     it('should throw a ForbiddenException if user is not authorized', () => {
-      const fakeInstrument = generateInstrument();
-      const { id } = fakeInstrument;
       request.user = {
         email: faker.internet.email(),
         sub: faker.datatype.uuid(),
         role: Role.User,
       };
 
-      expect(() => service.remove(id)).toThrow(ForbiddenException);
+      expect(() => service.remove('id')).toThrow(ForbiddenException);
     });
 
-    it('should throw an error if repository fails to delete an instrument', () => {
-      const error = new Error('Failed to delete instrument');
-      const fakeInstrument = generateInstrument();
-      const { id } = fakeInstrument;
+    it('should throw an error if fails to delete the instrument', () => {
+      const error = new Error('Error deleting the instrument');
       request.user = {
         email: faker.internet.email(),
         sub: faker.datatype.uuid(),
         role: Role.Admin,
       };
 
-      const mockDelete = jest.fn();
-      mockDelete.mockReturnValue(Promise.reject(error));
+      jest.spyOn(repository, 'delete').mockRejectedValue(error);
 
-      jest.spyOn(repository, 'delete').mockImplementation(mockDelete);
-
-      expect(service.remove(id)).rejects.toThrow(error);
-      expect(repository.delete).toHaveBeenCalledWith(id);
+      expect(service.remove('id')).rejects.toThrow(error);
+      expect(repository.delete).toHaveBeenCalledWith('id');
     });
   });
 });

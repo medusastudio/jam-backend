@@ -18,13 +18,6 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 export class InstrumentsController {
   constructor(private readonly instrumentsService: InstrumentsService) {}
 
-  @ApiBearerAuth('jwt')
-  @UseGuards(JwtAuthGuard)
-  @Post()
-  create(@Body() createInstrumentDto: CreateInstrumentDto) {
-    return this.instrumentsService.save(createInstrumentDto);
-  }
-
   @Get()
   findAll() {
     return this.instrumentsService.findAll();
@@ -33,6 +26,13 @@ export class InstrumentsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.instrumentsService.findById(id);
+  }
+
+  @ApiBearerAuth('jwt')
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  create(@Body() createInstrumentDto: CreateInstrumentDto) {
+    return this.instrumentsService.save(createInstrumentDto);
   }
 
   @ApiBearerAuth('jwt')

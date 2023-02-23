@@ -33,10 +33,10 @@ export class UsersService {
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
-    return this.usersRepository.save({ id, ...updateUserDto });
+    return this.usersRepository.update(id, updateUserDto);
   }
 
   remove(id: string) {
-    return this.usersRepository.delete(+id);
+    return this.usersRepository.delete(id);
   }
 }

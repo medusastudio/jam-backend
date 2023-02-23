@@ -1,10 +1,11 @@
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UsersController } from './users.controller';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 import { generateUser, generateUsers } from './users.fixtures';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Test, TestingModule } from '@nestjs/testing';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
 describe('UsersController', () => {
   let controller: UsersController;
@@ -31,25 +32,19 @@ describe('UsersController', () => {
   });
 
   describe('findAll', () => {
-    it('should return an array of users', () => {
+    it('should return all users', () => {
       const fakeUsers = generateUsers(5);
 
-      const mockFindAll = jest.fn();
-      mockFindAll.mockReturnValue(Promise.resolve(fakeUsers));
-
-      jest.spyOn(service, 'findAll').mockImplementation(mockFindAll);
+      jest.spyOn(service, 'findAll').mockResolvedValue(fakeUsers);
 
       expect(controller.findAll()).resolves.toEqual(fakeUsers);
       expect(service.findAll).toHaveBeenCalled();
     });
 
-    it('should handle errors when finding all users', async () => {
+    it('should throw an error if fails to return all users', () => {
       const error = new Error('Error finding all users');
 
-      const mockFindAll = jest.fn();
-      mockFindAll.mockReturnValue(Promise.reject(error));
-
-      jest.spyOn(service, 'findAll').mockImplementation(mockFindAll);
+      jest.spyOn(service, 'findAll').mockRejectedValue(error);
 
       expect(controller.findAll()).rejects.toThrow(error);
       expect(service.findAll).toHaveBeenCalled();
@@ -57,95 +52,66 @@ describe('UsersController', () => {
   });
 
   describe('findOne', () => {
-    const fakeUser = generateUser();
-    const { id } = fakeUser;
+    it('should return the user', () => {
+      const fakeUser = generateUser();
 
-    it('should return a user', () => {
-      const mockFindById = jest.fn();
-      mockFindById.mockReturnValue(Promise.resolve(fakeUser));
+      jest.spyOn(service, 'findById').mockResolvedValue(fakeUser);
 
-      jest.spyOn(service, 'findById').mockImplementation(mockFindById);
-
-      expect(controller.findOne(id)).resolves.toEqual(fakeUser);
-      expect(service.findById).toHaveBeenCalledWith(id);
+      expect(controller.findOne('id')).resolves.toEqual(fakeUser);
+      expect(service.findById).toHaveBeenCalledWith('id');
     });
 
-    it('should handle errors when finding the user', async () => {
+    it('should throw an error if fails to find the user', () => {
       const error = new Error('Error finding the user');
 
-      const mockFindById = jest.fn();
-      mockFindById.mockReturnValue(Promise.reject(error));
+      jest.spyOn(service, 'findById').mockRejectedValue(error);
 
-      jest.spyOn(service, 'findById').mockImplementation(mockFindById);
-
-      expect(controller.findOne(id)).rejects.toThrow(error);
-      expect(service.findById).toHaveBeenCalledWith(id);
+      expect(controller.findOne('id')).rejects.toThrow(error);
+      expect(service.findById).toHaveBeenCalledWith('id');
     });
   });
 
   describe('update', () => {
-    const fakeUser = generateUser();
-    const { id } = fakeUser;
-
     it('should update the user', () => {
-      const updateUserDto: UpdateUserDto = {
-        email: 'ivan@gmail.com',
-        firstName: 'Ivan',
-        country: 'Germany',
-        city: 'Berlin',
-      };
-      const expectedResult = { ...fakeUser, ...updateUserDto };
+      const updateUserDto: UpdateUserDto = {};
+      const updateResult: UpdateResult = { raw: {}, generatedMaps: [] };
 
-      const mockUpdate = jest.fn();
-      mockUpdate.mockReturnValue(Promise.resolve(expectedResult));
+      jest.spyOn(service, 'update').mockResolvedValue(updateResult);
 
-      jest.spyOn(service, 'update').mockImplementation(mockUpdate);
-
-      expect(controller.update(id, updateUserDto)).resolves.toEqual(
-        expectedResult,
+      expect(controller.update('id', updateUserDto)).resolves.toEqual(
+        updateResult,
       );
-      expect(service.update).toHaveBeenCalledWith(id, updateUserDto);
+      expect(service.update).toHaveBeenCalledWith('id', updateUserDto);
     });
 
-    it('should handle errors when updating the user', async () => {
+    it('should throw an error if fails to update the user', () => {
       const error = new Error('Error updating the user');
+      const updateUserDto: UpdateUserDto = {};
 
-      const mockUpdate = jest.fn();
-      mockUpdate.mockReturnValue(Promise.reject(error));
+      jest.spyOn(service, 'update').mockRejectedValue(error);
 
-      jest.spyOn(service, 'update').mockImplementation(mockUpdate);
-
-      expect(controller.update(id, {})).rejects.toThrow(error);
-      expect(service.update).toHaveBeenCalledWith(id, {});
+      expect(controller.update('id', updateUserDto)).rejects.toThrow(error);
+      expect(service.update).toHaveBeenCalledWith('id', updateUserDto);
     });
   });
 
   describe('remove', () => {
-    const fakeUser = generateUser();
-    const { id } = fakeUser;
-
     it('should remove the user', () => {
-      const deleteResult = { affected: 1, raw: [{ affected: 1 }] };
+      const deleteResult: DeleteResult = { raw: {} };
 
-      const mockDelete = jest.fn();
-      mockDelete.mockReturnValue(Promise.resolve(deleteResult));
+      jest.spyOn(service, 'remove').mockResolvedValue(deleteResult);
 
-      jest.spyOn(service, 'remove').mockImplementation(mockDelete);
-
-      expect(controller.remove(id)).resolves.toEqual(deleteResult);
-      expect(service.remove).toHaveBeenCalledWith(id);
+      expect(controller.remove('id')).resolves.toEqual(deleteResult);
+      expect(service.remove).toHaveBeenCalledWith('id');
     });
 
-    it('should handle errors when removing the user', async () => {
+    it('should throw an error if fails to remove the user', () => {
       const error = new Error('Error removing the user');
 
-      const mockDelete = jest.fn();
-      mockDelete.mockReturnValue(Promise.reject(error));
+      jest.spyOn(service, 'remove').mockRejectedValue(error);
 
-      jest.spyOn(service, 'remove').mockImplementation(mockDelete);
-
-      expect(controller.remove(id)).rejects.toThrow(error);
-      expect(service.remove).toHaveBeenCalledWith(id);
+      expect(controller.remove('id')).rejects.toThrow(error);
+      expect(service.remove).toHaveBeenCalledWith('id');
     });
   });
 });
