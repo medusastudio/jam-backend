@@ -22,13 +22,14 @@ import { AuthModule } from './auth/auth.module';
 import { CaslModule } from './casl/casl.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'jam_postgres',
-      port: 5432,
+      host: 'localhost',
+      port: 5433,
       username: 'medusa',
       password: 'medusa',
       database: 'jam',
@@ -59,6 +60,7 @@ import { Module } from '@nestjs/common';
     UserGenresModule,
     AuthModule,
     CaslModule,
+    ConfigModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
